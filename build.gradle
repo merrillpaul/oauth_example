@@ -1,0 +1,116 @@
+// root build.gradle
+
+def sysProps = System.properties
+def name = 'com.pearson.merrill.oauth_example'
+def appVersion = sysProps["APP_VERSION"]?:"1.0.0-SNAPSHOT"
+def bootVersion = "1.4.2.RELEASE"
+ext.versions = [
+		groovy: "2.4.7",
+        joda: "2.9.4",
+		mysql: "5.1.39",
+		hsql: "2.3.3",
+		boot: bootVersion	
+]
+
+buildscript {	
+
+	ext {
+		bootVersion = "1.4.2.RELEASE"
+	}
+	repositories {
+		jcenter()
+		maven { url "http://repo.spring.io/snapshot" }
+		maven { url "http://repo.spring.io/milestone" }
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${bootVersion}")
+		classpath("org.springframework:springloaded:1.2.5.RELEASE")
+	}
+}
+
+
+apply plugin: 'idea'
+
+
+
+repositories {
+	jcenter()
+	maven { url "http://repo.spring.io/snapshot" }
+	maven { url "http://repo.spring.io/milestone" }
+}
+
+allprojects {
+   
+	apply plugin: 'idea'
+	group = "${name}"
+	version = "${appVersion}"
+
+
+	repositories {
+        	jcenter()
+        	maven { url "http://repo.spring.io/snapshot" }
+        	maven { url "http://repo.spring.io/milestone" }
+			mavenCentral()
+	}
+	
+}
+
+subprojects {
+
+    apply plugin: 'java'
+	apply plugin: 'groovy'
+
+	//sourceCompatibility = 1.8
+	//targetCompatibility = 1.8
+
+	dependencies {
+		compile("org.codehaus.groovy:groovy-all:${versions.groovy}")
+		// for joda dateime in JPA entities
+		compile("joda-time:joda-time:${versions.joda}")
+		compile("mysql:mysql-connector-java:${versions.mysql}")
+		compile("org.hsqldb:hsqldb:${versions.hsql}")
+		compile 'org.apache.commons:commons-lang3:3.4'
+		compile("org.springframework.boot:spring-boot-starter-data-jpa:${versions.boot}")
+
+		testCompile("org.springframework.boot:spring-boot-starter-test:${versions.boot}")
+		testCompile("org.powermock:powermock-mockito-release-full:1.6.4")
+		testCompile 'org.spockframework:spock-spring:1.0-groovy-2.4'
+		testCompile 'cglib:cglib-nodep:3.2.2'
+
+	}
+	
+	tasks.withType(JavaCompile) {
+    	options.incremental = true
+	}
+
+	sourceSets {
+		  test {
+		    java.srcDirs = ['src/test/unit/java']
+		    groovy.srcDirs = ['src/test/unit/groovy']
+		  }
+		  integration {
+		    java.srcDirs = ['src/test/integration/java']
+		    groovy.srcDirs = ['src/test/integration/groovy']
+		    resources.srcDir 'src/test/resources'
+		    compileClasspath += main.output + test.output
+		    runtimeClasspath += main.output + test.output
+		  }
+	}
+
+	configurations {
+  		integrationCompile.extendsFrom testCompile
+  		integrationRuntime.extendsFrom testRuntime
+	}
+
+	task integration(type: Test, description: 'Runs the integration tests.', group: 'Verification') {
+  		testClassesDir = sourceSets.integration.output.classesDir
+  		classpath = sourceSets.integration.runtimeClasspath
+	}
+}
+
+
+// gradle wrapper
+task wrapper(type: Wrapper) {
+	gradleVersion = '3.1'
+}
+
