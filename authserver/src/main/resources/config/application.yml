@@ -1,0 +1,10 @@
+server:
+  port: 9999
+  contextPath: /uaa
+
+#security:
+#  user:
+#    password: password
+
+tokenDatasource:
+  mongo-uri: mongodb://tokenstore_user:Password1!@localhost:27017/tokenstoredb
