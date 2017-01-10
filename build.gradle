@@ -4,12 +4,46 @@ def sysProps = System.properties
 def name = 'com.pearson.merrill.oauth_example'
 def appVersion = sysProps["APP_VERSION"]?:"1.0.0-SNAPSHOT"
 def bootVersion = "1.4.2.RELEASE"
+def getProfile = {
+	def providedProfile = System.getenv('P1_ENV')
+	def environment = 'dev';
+	if (providedProfile) {
+
+		switch (providedProfile) {
+			case 'prod':
+			case 'production':
+				environment = 'prod'
+				break
+
+			case 'beta':
+			case 'beta1':
+				environment = 'beta1'
+				break
+
+			case 'ppe':
+				environment = 'ppe'
+				break
+
+			case 'staging':
+				environment = 'staging'
+				break
+
+			case 'test':
+			case 'testing':
+				environment = 'tst'
+				break
+		}
+	}
+	environment.trim()
+}
+
 ext.versions = [
 		groovy: "2.4.7",
         joda: "2.9.4",
 		mysql: "5.1.39",
 		hsql: "2.3.3",
-		boot: bootVersion	
+		boot: bootVersion,
+		profile: getProfile()
 ]
 
 buildscript {	
@@ -113,4 +147,8 @@ subprojects {
 task wrapper(type: Wrapper) {
 	gradleVersion = '3.1'
 }
+
+
+
+
 

@@ -10,3 +10,10 @@ dependencies {
 	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 	compile("org.springframework.boot:spring-boot-starter-data-mongodb")
 }
+
+
+
+task runAll {
+	bootRun.getSystemProperties().put('spring.profiles.active', versions.profile)
+}
+runAll.dependsOn(bootRun)
