@@ -1,7 +1,7 @@
-package com.merrill.examples.oauth2.dao.mongo.tokenstore
+package com.merrill.examples.oauth2.commons.dao.mongo.tokenstore
 
-import com.merrill.examples.oauth2.domain.tokenstore.AccessToken
-import com.merrill.examples.oauth2.domain.tokenstore.RefreshToken
+import com.merrill.examples.oauth2.commons.domain.tokenstore.AccessToken
+import com.merrill.examples.oauth2.commons.domain.tokenstore.RefreshToken
 import org.springframework.data.mongodb.repository.MongoRepository
 
 /**

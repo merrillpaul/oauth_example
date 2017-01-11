@@ -1,4 +1,4 @@
-package com.merrill.examples.oauth2.config.mongo
+package com.merrill.examples.oauth2.commons.config.mongo
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.ConfigurationProperties
@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
  * Created by upaulm2 on 1/9/17.
  */
 @Configuration
-@EnableMongoRepositories(basePackages = 'com.merrill.examples.oauth2.dao.mongo.tokenstore', mongoTemplateRef = "tokenStoreMongoTemplate")
+@EnableMongoRepositories(basePackages = 'com.merrill.examples.oauth2.commons.dao.mongo.tokenstore', mongoTemplateRef = "tokenStoreMongoTemplate")
 class TokenStoreConfig {
 
     @Autowired

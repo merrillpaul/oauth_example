@@ -1,4 +1,4 @@
-package com.merrill.examples.oauth2.config.mongo
+package com.merrill.examples.oauth2.commons.config.mongo
 
 import com.mongodb.MongoClientURI
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,14 +20,15 @@ class EnvironmentAwareMongoDbBuilder {
     def MongoDbFactory prepareMongoDataSource(def config) {
         def factory
         factory = new SimpleMongoDbFactory(new MongoClientURI(config['mongo-uri']))
-
-        if (environment.activeProfiles.contains('dev')) {
+        // this is for the oauth2 clients such as the api ( resource server )
+        // to not cleanse the tokens in dev mode , created by the auth server doh !
+        def preserveData = config['preserve-data']
+        if (!preserveData && environment.activeProfiles.contains('dev')) {
 
             factory.db.getCollectionNames().each {
                 println "Dropping Mongo Collection ${it} in dev mode"
                 factory.db.getCollection(it).drop()
             }
-
         }
         factory
     }

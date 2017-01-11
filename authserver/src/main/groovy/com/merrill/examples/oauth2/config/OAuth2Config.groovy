@@ -31,7 +31,7 @@ class OAuth2Config extends AuthorizationServerConfigurerAdapter{
             throws Exception {
         oauthServer
                 .tokenKeyAccess("permitAll()")
-                .checkTokenAccess("isAuthenticated()");
+                .checkTokenAccess("isAuthenticated()")
     }
 
 
@@ -41,7 +41,7 @@ class OAuth2Config extends AuthorizationServerConfigurerAdapter{
         .withClient("acme")
         .secret("acmesecret")
         .authorizedGrantTypes("authorization_code", "refresh_token",
-                "password").scopes("read")
+                "password", "implicit").scopes("read")
         .and()
         .withClient("sampleClientId")
         .authorizedGrantTypes("implicit")

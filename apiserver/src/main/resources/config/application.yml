@@ -1,0 +1,7 @@
+server:
+  port: 9998
+  contextPath: /api
+
+tokenDatasource:
+  mongo-uri: mongodb://tokenstore_user:Password1!@localhost:27017/tokenstoredb
+  preserve-data: true

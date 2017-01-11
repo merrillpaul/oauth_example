@@ -8,7 +8,6 @@ dependencies {
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	compile('org.springframework.security.oauth:spring-security-oauth2')
 	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
-	compile("org.springframework.boot:spring-boot-starter-data-mongodb")
 	compile project(':authcommons')
 }
 

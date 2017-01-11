@@ -1,9 +1,9 @@
-package com.merrill.examples.oauth2.provider.token.store
+package com.merrill.examples.oauth2.commons.provider.token.store
 
-import com.merrill.examples.oauth2.dao.mongo.tokenstore.AccessTokenRepository
-import com.merrill.examples.oauth2.dao.mongo.tokenstore.RefreshTokenRepository
-import com.merrill.examples.oauth2.domain.tokenstore.AccessToken
-import com.merrill.examples.oauth2.domain.tokenstore.RefreshToken
+import com.merrill.examples.oauth2.commons.dao.mongo.tokenstore.AccessTokenRepository
+import com.merrill.examples.oauth2.commons.dao.mongo.tokenstore.RefreshTokenRepository
+import com.merrill.examples.oauth2.commons.domain.tokenstore.AccessToken
+import com.merrill.examples.oauth2.commons.domain.tokenstore.RefreshToken
 import org.apache.commons.logging.LogFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Primary

@@ -1,4 +1,4 @@
-package com.merrill.examples.oauth2.domain.tokenstore
+package com.merrill.examples.oauth2.commons.domain.tokenstore
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
