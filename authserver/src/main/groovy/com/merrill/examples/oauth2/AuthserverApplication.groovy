@@ -9,6 +9,7 @@ public class AuthserverApplication extends WebMvcConfigurerAdapter {
 
 
 	public static void main(String[] args) {
-		SpringApplication.run(AuthserverApplication.class, args)
+		def ctx = SpringApplication.run(AuthserverApplication.class, args)
+		ctx.start()
 	}
 }

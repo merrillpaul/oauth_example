@@ -94,6 +94,7 @@ curl -v localhost:9998/api/
  TOKEN=942f3afc-2a4c-45e8-b935-0b98e6c8bc9a ;
  curl -H "Authorization: Bearer $TOKEN" localhost:9998/api/foo/foo/4500 
 `
+
 ## Implicit Flow
 * Link on Browser -> http://localhost:9999/uaa/oauth/authorize?response_type=token&client_id=acme&redirect_uri=http://example.com
 * After authentication gets redirected to http://example.com/#access_token=c77a25b5-03b3-40b4-9cbb-6d291e88f553&token_type=bearer&expires_in=43183&scope=read
@@ -124,5 +125,9 @@ TOKEN=93810147-ec08-4da8-818f-f62c9718fb6f; curl -H "Authorization: Bearer $TOKE
 < Connection #0 to host localhost left intact
 {"fooName":"Foo 443434500 Name","fooId":"FID 443434500"}
 ```
+
+# Logout
+* From Browser or Ajax call http://localhost:9999/uaa/oauth/logout_token?token=ca7dc0a3-2e46-4798-8218-072d7a25743c 
+
 # References
 * http://www.baeldung.com/rest-api-spring-oauth2-angularjs
