@@ -95,6 +95,20 @@ curl -v localhost:9998/api/
  curl -H "Authorization: Bearer $TOKEN" localhost:9998/api/foo/foo/4500 
 `
 
+## Password Flow
+Allows a custom password page and using xhr we request for a token
+* Invoke /oauth/token
+This is how we get the token
+`
+curl -X POST  -u acme:acmesecret http://localhost:9999/uaa/oauth/token -H "Accept: application/json" -d "password=123&username=john&grant_type=password&scope=read"
+`
+Response is 
+`
+{"access_token":"21e5862c-d74b-4485-9fa4-79e2312a3982","token_type":"bearer","refresh_token":"8b4f0c94-8017-419a-addb-ebead4afca95","expires_in":43196,"scope":"read"}
+`
+
+
+
 ## Implicit Flow
 * Link on Browser -> http://localhost:9999/uaa/oauth/authorize?response_type=token&client_id=acme&redirect_uri=http://example.com
 * After authentication gets redirected to http://example.com/#access_token=c77a25b5-03b3-40b4-9cbb-6d291e88f553&token_type=bearer&expires_in=43183&scope=read
@@ -127,7 +141,8 @@ TOKEN=93810147-ec08-4da8-818f-f62c9718fb6f; curl -H "Authorization: Bearer $TOKE
 ```
 
 # Logout
-* From Browser or Ajax call http://localhost:9999/uaa/oauth/logout_token?token=ca7dc0a3-2e46-4798-8218-072d7a25743c 
+* From Browser or Ajax call http://localhost:9999/uaa/oauth/logout_token?token=ca7dc0a3-2e46-4798-8218-072d7a25743c or
+* TOKEN=sometoken; curl http://localhost:9999/uaa/oauth/logout_token -d token=$TOKEN
 
 # References
 * http://www.baeldung.com/rest-api-spring-oauth2-angularjs

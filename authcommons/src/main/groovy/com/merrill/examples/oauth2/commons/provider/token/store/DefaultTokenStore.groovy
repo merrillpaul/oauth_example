@@ -122,7 +122,11 @@ class DefaultTokenStore implements TokenStore {
 
     @Override
     void removeAccessToken(OAuth2AccessToken token) {
-        def tokenKey = extractTokenKey(token.value)
+        removeAccessToken(token.value)
+    }
+
+    void removeAccessToken(String token) {
+        def tokenKey = extractTokenKey(token)
         accessTokenRepository.delete(tokenKey)
     }
 

@@ -7,6 +7,10 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.oauth2.provider.client.ClientCredentialsTokenEndpointFilter
+import org.springframework.security.oauth2.provider.endpoint.FrameworkEndpointHandlerMapping
+import org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 
 /**
  * Created by upaulm2 on 1/3/17.
@@ -30,6 +34,8 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+
         http.authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .anyRequest().authenticated()
@@ -37,5 +43,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().permitAll()
                 .and()
                 .csrf().disable()
+
+
     }
 }

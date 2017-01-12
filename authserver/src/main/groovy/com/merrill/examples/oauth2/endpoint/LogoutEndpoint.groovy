@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
 
+import java.security.Principal
+
 /**
  * Created by upaulm2 on 1/11/17.
  */
@@ -24,7 +26,7 @@ class LogoutEndpoint {
 
     @RequestMapping(value = "/oauth/logout_token")
     @ResponseBody
-    def logoutToken(@RequestParam("token") String tokenString) {
+    def logoutToken(Principal principal, @RequestParam("token") String tokenString) {
         consumerTokenServices.revokeToken(tokenString)
     }
 }
