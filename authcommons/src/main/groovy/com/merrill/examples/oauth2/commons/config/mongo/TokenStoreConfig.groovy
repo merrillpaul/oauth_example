@@ -1,6 +1,9 @@
 package com.merrill.examples.oauth2.commons.config.mongo
 
+import com.merrill.examples.oauth2.commons.mongo.CustomerLocationAwareMongoTemplate
+import com.merrill.examples.oauth2.commons.mongo.CustomerTemplateResolver
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -19,6 +22,13 @@ class TokenStoreConfig {
     @Autowired
     EnvironmentAwareMongoDbBuilder environmentAwareMongoDbBuilder
 
+    @Autowired
+    CustomerTemplateResolver customerTemplateResolver
+
+
+    @Value('${config.auth_server}')
+    boolean authServerMode
+
     @Bean(name = "tokenStoreDSConfig")
     @ConfigurationProperties(prefix = "tokenDatasource")
     public def prepareCustomerDataSourceConfigs() {
@@ -36,6 +46,8 @@ class TokenStoreConfig {
     @Bean(name = "tokenStoreMongoTemplate")
     @Primary
     public MongoTemplate customerMongoTemplate() {
-        new MongoTemplate(customerMongoFactory())
+        def factory = customerMongoFactory()
+        return authServerMode? new CustomerLocationAwareMongoTemplate(factory, customerTemplateResolver)
+                : new MongoTemplate(factory)
     }
 }

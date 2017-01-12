@@ -13,6 +13,22 @@ where local_mongo_store might be a localhost or a host name routed to a local IP
 * `./gradlew idea`
 * Import project in intelliJ
 
+# Mysql
+For user, role and metadata
+
+```
+$ mysql -u root
+create database oauth_example;
+create user scott;
+grant all on oauth_example.* to 'scott'@'localhost' identified by 'tiger';
+grant all on oauth_example.* to 'scott'@'%' identified by 'tiger';
+grant select, insert, delete, update on oauth_example.* to 'scott'@'localhost' identified by 'tiger';
+grant select, insert, delete, update on oauth_example.* to 'scott'@'%' identified by 'tiger';
+exit
+
+$ mysql -u scott oauth_example -p
+```
+
 # TokenStore
 
 TokenStore is a mongoDB store.
@@ -48,7 +64,7 @@ enter admin password
  `
  `mongo> db.createUser(user);`
  `exit`
-
+* repeat the above for tokenstoredb_US and tokenstoredb_FR
 * Test the login with user
 `$ mongo tokenstoredb -u tokenstore_user -p`
 * On higher env, its recommended to use replicaSets. Research that option if needed and modify the mongo-uri in application.yml
@@ -100,7 +116,7 @@ Allows a custom password page and using xhr we request for a token
 * Invoke /oauth/token
 This is how we get the token
 `
-curl -X POST  -u acme:acmesecret http://localhost:9999/uaa/oauth/token -H "Accept: application/json" -d "password=123&username=john&grant_type=password&scope=read"
+curl -X POST  -u acme:acmesecret http://localhost:9999/uaa/oauth/token -H "Accept: application/json" -d "password=Password1&username=jon_us&grant_type=password&scope=read&client_id=acme"
 `
 Response is 
 `

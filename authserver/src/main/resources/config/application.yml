@@ -1,10 +1,31 @@
+config:
+  auth_server: true
+
 server:
   port: 9999
   contextPath: /uaa
 
-#security:
-#  user:
-#    password: password
+spring:
+  profiles:
+    active: dev
+  groovy:
+    template:
+      cache: false
+
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        physical_naming_strategy: com.merrill.examples.oauth2.commons.utils.PhysicalNamingStrategyImpl
 
 tokenDatasource:
   mongo-uri: mongodb://tokenstore_user:Password1!@localhost:27017/tokenstoredb
+
+userDatasource:
+  driver-class-name: com.mysql.jdbc.Driver
+  url: jdbc:mysql://localhost:3306/oauth_example
+  username: scott
+  password: tiger
