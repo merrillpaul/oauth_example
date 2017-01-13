@@ -4,6 +4,7 @@ import com.merrill.examples.oauth2.commons.dao.mongo.tokenstore.AccessTokenRepos
 import com.merrill.examples.oauth2.commons.dao.mongo.tokenstore.RefreshTokenRepository
 import com.merrill.examples.oauth2.commons.domain.tokenstore.AccessToken
 import com.merrill.examples.oauth2.commons.domain.tokenstore.RefreshToken
+import com.merrill.examples.oauth2.commons.service.OauthTokenStoreService
 import org.apache.commons.logging.LogFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Primary
@@ -36,10 +37,7 @@ class DefaultTokenStore implements TokenStore {
     private AuthenticationKeyGenerator authenticationKeyGenerator = new DefaultAuthenticationKeyGenerator()
 
     @Autowired
-    AccessTokenRepository accessTokenRepository
-
-    @Autowired
-    RefreshTokenRepository refreshTokenRepository
+    OauthTokenStoreService oauthTokenStoreService
 
     @Override
     OAuth2Authentication readAuthentication(OAuth2AccessToken token) {
@@ -50,7 +48,7 @@ class DefaultTokenStore implements TokenStore {
     OAuth2Authentication readAuthentication(String token) {
         OAuth2Authentication authentication
         def tokenKey = extractTokenKey(token)
-        def accessToken = accessTokenRepository.findOne(tokenKey)
+        def accessToken = oauthTokenStoreService.getAccessToken(tokenKey)
         try {
             if (accessToken) {
                 def authenticationBlobString = accessToken.authentication
@@ -93,7 +91,7 @@ class DefaultTokenStore implements TokenStore {
                 clientId: clientId, authenticationId: authenticationId, authentication: authenticationBase64String,
                 refreshToken: refreshTokenKey)
 
-        accessTokenRepository.save(accessToken)
+        oauthTokenStoreService.saveToken(accessToken)
 
     }
 
@@ -103,7 +101,7 @@ class DefaultTokenStore implements TokenStore {
 
         try {
             def tokenKey = extractTokenKey(tokenValue)
-            def accessTokenObj = accessTokenRepository.findOne(tokenKey)
+            def accessTokenObj = oauthTokenStoreService.getAccessToken(tokenKey)
             if (!accessTokenObj) {
                 if (LOG.isInfoEnabled()) {
                     LOG.info("Failed to find access token for token " + tokenValue);
@@ -127,7 +125,7 @@ class DefaultTokenStore implements TokenStore {
 
     void removeAccessToken(String token) {
         def tokenKey = extractTokenKey(token)
-        accessTokenRepository.delete(tokenKey)
+        oauthTokenStoreService.deleteAccessToken(tokenKey)
     }
 
     @Override
@@ -136,7 +134,7 @@ class DefaultTokenStore implements TokenStore {
         def tokenSer = Base64.encoder.encodeToString(serializeRefreshToken(refreshToken))
         def authenticationSer = Base64.encoder.encodeToString(serializeAuthentication(authentication))
         def refreshTokenObj = new RefreshToken(tokenId: refreshTokenKey, token: tokenSer, authentication: authenticationSer)
-        refreshTokenRepository.save(refreshTokenObj)
+        oauthTokenStoreService.saveToken(refreshTokenObj)
     }
 
     @Override
@@ -145,7 +143,7 @@ class DefaultTokenStore implements TokenStore {
 
         try {
             def tokenKey = extractTokenKey(token)
-            def refreshTokenObj = refreshTokenRepository.findOne(tokenKey)
+            def refreshTokenObj = oauthTokenStoreService.getRefreshToken(tokenKey)
             if (!refreshTokenObj) {
                 if (LOG.isInfoEnabled()) {
                     LOG.info("Failed to find refresh token for token " + token)
@@ -168,7 +166,7 @@ class DefaultTokenStore implements TokenStore {
         def value = token.value
         try {
             def tokenKey = extractTokenKey(value)
-            def refreshTokenObj = refreshTokenRepository.findOne(tokenKey)
+            def refreshTokenObj = oauthTokenStoreService.getRefreshToken(tokenKey)
             if (!refreshTokenObj) {
                 if (LOG.isInfoEnabled()) {
                     LOG.info("Failed to find refresh token for token " + token)
@@ -187,13 +185,13 @@ class DefaultTokenStore implements TokenStore {
     @Override
     void removeRefreshToken(OAuth2RefreshToken token) {
         def tokenKey = extractTokenKey(token.value)
-        refreshTokenRepository.delete(tokenKey)
+        oauthTokenStoreService.deleteRefreshToken(tokenKey)
     }
 
     @Override
     void removeAccessTokenUsingRefreshToken(OAuth2RefreshToken refreshToken) {
         def refreshTokenKey = extractTokenKey(refreshToken)
-        accessTokenRepository.deleteAccessTokenByRefreshToken(refreshTokenKey)
+        oauthTokenStoreService.deleteAccessTokenWithRefreshToken(refreshTokenKey)
     }
 
     @Override
@@ -202,7 +200,7 @@ class DefaultTokenStore implements TokenStore {
 
         String key = authenticationKeyGenerator.extractKey(authentication)
         try {
-            def accessTokenObj = accessTokenRepository.findByAuthenticationId(key)
+            def accessTokenObj = oauthTokenStoreService.getAccessTokenForAuthenticationId(key)
             if (!accessTokenObj) {
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("Failed to find access token for authentication " + authentication)
@@ -228,7 +226,7 @@ class DefaultTokenStore implements TokenStore {
     @Override
     Collection<OAuth2AccessToken> findTokensByClientIdAndUserName(String clientId, String userName) {
         List<OAuth2AccessToken> accessTokens
-        def tokens = accessTokenRepository.findByClientIdAndUserName(clientId, userName)
+        def tokens = oauthTokenStoreService.getAccessTokens(clientId, userName)
         accessTokens = tokens.collect {
             def eachObj = null
             try {
@@ -248,7 +246,7 @@ class DefaultTokenStore implements TokenStore {
     @Override
     Collection<OAuth2AccessToken> findTokensByClientId(String clientId) {
         List<OAuth2AccessToken> accessTokens
-        def tokens = accessTokenRepository.findByClientId(clientId)
+        def tokens = oauthTokenStoreService.getAccessTokens(clientId)
         accessTokens = tokens.collect {
             def eachObj = null
             try {
