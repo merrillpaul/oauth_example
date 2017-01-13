@@ -6,5 +6,5 @@ server:
   contextPath: /api
 
 tokenDatasource:
-  mongo-uri: mongodb://tokenstore_user:Password1!@localhost:27017/tokenstoredb
+  mongo-uri: mongodb://tokenstore_user:Password1!@localhost:27017/tokenstoredb_US
   preserve-data: true

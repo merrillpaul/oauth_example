@@ -9,6 +9,11 @@ For eg an API server in San Antonio , TX will have a route to the mongodb as
 mongodb://tokenstore_user:Password1!@local_mongo_store:27017/tokenstoredb
 where local_mongo_store might be a localhost or a host name routed to a local IP
 
+## AuthServer
+* UserDetails in mysql
+* OAuthToken Server saves token into master token store and user specific token store via JMS
+* ApiServer in the workspace refers to token store with *_US store ( configured in yaml). In reality there will be multiple apiservers with respective token store servers
+
 # Setup
 * `./gradlew idea`
 * Import project in intelliJ

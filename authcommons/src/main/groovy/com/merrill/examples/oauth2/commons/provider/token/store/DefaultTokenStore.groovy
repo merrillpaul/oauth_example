@@ -18,6 +18,7 @@ import org.springframework.security.oauth2.provider.token.AuthenticationKeyGener
 import org.springframework.security.oauth2.provider.token.DefaultAuthenticationKeyGenerator
 import org.springframework.security.oauth2.provider.token.TokenStore
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore
+import static com.merrill.examples.oauth2.commons.utils.Oauth2SerializationUtils.*
 import org.springframework.stereotype.Component
 
 import java.security.MessageDigest
@@ -28,8 +29,6 @@ import java.sql.SQLException
 /**
  * Created by upaulm2 on 1/9/17.
  */
-@Component("appTokenStore")
-@Primary
 class DefaultTokenStore implements TokenStore {
 
     private static final def LOG = LogFactory.getLog(DefaultTokenStore)
@@ -52,8 +51,7 @@ class DefaultTokenStore implements TokenStore {
         try {
             if (accessToken) {
                 def authenticationBlobString = accessToken.authentication
-                byte[] b = Base64.decoder.decode(authenticationBlobString)
-                authentication = deserializeAuthentication(b)
+                authentication = deserializeAuthentication(authenticationBlobString)
             } else {
                 if (LOG.isInfoEnabled()) {
                     LOG.info("Failed to find access token for token " + token)
@@ -78,20 +76,18 @@ class DefaultTokenStore implements TokenStore {
         }
 
         def tokenKey = extractTokenKey(token.getValue())
-        def serBytes = serializeAccessToken(token)
-        def tokenBase64String = Base64.encoder.encodeToString(serBytes)
+        def tokenBase64String = serializeAccessToken(token)
         def authenticationId = authenticationKeyGenerator.extractKey(authentication)
         def username = authentication.isClientOnly() ? null : authentication.name
         def clientId = authentication.getOAuth2Request().getClientId()
-        def authenticationBytes = serializeAuthentication(authentication)
-        def authenticationBase64String = Base64.encoder.encodeToString(authenticationBytes)
+        def authenticationBase64String = serializeAuthentication(authentication)
         def refreshTokenKey = extractTokenKey(refreshToken)
 
         def accessToken = new AccessToken(tokenId: tokenKey, token: tokenBase64String, userName: username,
                 clientId: clientId, authenticationId: authenticationId, authentication: authenticationBase64String,
                 refreshToken: refreshTokenKey)
 
-        oauthTokenStoreService.saveToken(accessToken)
+        oauthTokenStoreService.saveToken(accessToken, authentication)
 
     }
 
@@ -107,8 +103,7 @@ class DefaultTokenStore implements TokenStore {
                     LOG.info("Failed to find access token for token " + tokenValue);
                 }
             } else {
-                def tokenBytes = Base64.decoder.decode(accessTokenObj.token)
-                accessToken = deserializeAccessToken(tokenBytes)
+                accessToken = deserializeAccessToken(accessTokenObj.token)
             }
         } catch (IllegalArgumentException e) {
             LOG.warn("Failed to deserialize access token for " + tokenValue, e)
@@ -131,10 +126,10 @@ class DefaultTokenStore implements TokenStore {
     @Override
     void storeRefreshToken(OAuth2RefreshToken refreshToken, OAuth2Authentication authentication) {
         def refreshTokenKey = extractTokenKey(refreshToken.value)
-        def tokenSer = Base64.encoder.encodeToString(serializeRefreshToken(refreshToken))
-        def authenticationSer = Base64.encoder.encodeToString(serializeAuthentication(authentication))
+        def tokenSer = serializeRefreshToken(refreshToken)
+        def authenticationSer = serializeAuthentication(authentication)
         def refreshTokenObj = new RefreshToken(tokenId: refreshTokenKey, token: tokenSer, authentication: authenticationSer)
-        oauthTokenStoreService.saveToken(refreshTokenObj)
+        oauthTokenStoreService.saveToken(refreshTokenObj, authentication)
     }
 
     @Override
@@ -149,8 +144,7 @@ class DefaultTokenStore implements TokenStore {
                     LOG.info("Failed to find refresh token for token " + token)
                 }
             } else {
-                def tokenBytes = Base64.decoder.decode(refreshTokenObj.token)
-                refreshToken = deserializeRefreshToken(tokenBytes)
+                refreshToken = deserializeRefreshToken(refreshTokenObj.token)
             }
         } catch (IllegalArgumentException e) {
             LOG.warn("Failed to deserialize refresh token for token " + token, e)
@@ -172,8 +166,7 @@ class DefaultTokenStore implements TokenStore {
                     LOG.info("Failed to find refresh token for token " + token)
                 }
             } else {
-                def tokenBytes = Base64.decoder.decode(refreshTokenObj.authentication)
-                authentication = deserializeAuthentication(tokenBytes)
+                authentication = deserializeAuthentication(refreshTokenObj.authentication)
             }
         } catch (IllegalArgumentException e) {
             LOG.warn("Failed to deserialize refresh token for token " + token, e)
@@ -206,8 +199,7 @@ class DefaultTokenStore implements TokenStore {
                     LOG.debug("Failed to find access token for authentication " + authentication)
                 }
             } else {
-                def tokenBytes = Base64.decoder.decode(accessTokenObj.token)
-                accessToken = deserializeAccessToken(tokenBytes)
+                accessToken = deserializeAccessToken(accessTokenObj.token)
             }
         } catch (IllegalArgumentException e) {
             LOG.error("Could not extract access token for authentication " + authentication, e)
@@ -230,8 +222,7 @@ class DefaultTokenStore implements TokenStore {
         accessTokens = tokens.collect {
             def eachObj = null
             try {
-                def tokenBytes = Base64.decoder.decode(it.token)
-                eachObj = deserializeAccessToken(tokenBytes)
+                eachObj = deserializeAccessToken(it.token)
             } catch (IllegalArgumentException e) {
                 LOG.warn("Failed to deserialize access token for " + it.tokenId, e)
             }
@@ -250,8 +241,7 @@ class DefaultTokenStore implements TokenStore {
         accessTokens = tokens.collect {
             def eachObj = null
             try {
-                def tokenBytes = Base64.decoder.decode(it.token)
-                eachObj = deserializeAccessToken(tokenBytes)
+                eachObj = deserializeAccessToken(it.token)
             } catch (IllegalArgumentException e) {
                 LOG.warn("Failed to deserialize access token for " + it.tokenId, e)
             }
@@ -263,48 +253,5 @@ class DefaultTokenStore implements TokenStore {
         accessTokens
     }
 
-    protected String extractTokenKey(String value) {
-        if (value == null) {
-            return null
-        }
-        MessageDigest digest
-        try {
-            digest = MessageDigest.getInstance("MD5")
-        }
-        catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("MD5 algorithm not available.  Fatal (should be in the JDK).")
-        }
 
-        try {
-            byte[] bytes = digest.digest(value.getBytes("UTF-8"))
-            return String.format("%032x", new BigInteger(1, bytes))
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new IllegalStateException("UTF-8 encoding not available.  Fatal (should be in the JDK).")
-        }
-    }
-
-    protected byte[] serializeAccessToken(OAuth2AccessToken token) {
-        return SerializationUtils.serialize(token)
-    }
-
-    protected byte[] serializeRefreshToken(OAuth2RefreshToken token) {
-        return SerializationUtils.serialize(token)
-    }
-
-    protected byte[] serializeAuthentication(OAuth2Authentication authentication) {
-        return SerializationUtils.serialize(authentication)
-    }
-
-    protected OAuth2AccessToken deserializeAccessToken(byte[] token) {
-        return SerializationUtils.deserialize(token);
-    }
-
-    protected OAuth2RefreshToken deserializeRefreshToken(byte[] token) {
-        return SerializationUtils.deserialize(token);
-    }
-
-    protected OAuth2Authentication deserializeAuthentication(byte[] authentication) {
-        return SerializationUtils.deserialize(authentication);
-    }
 }

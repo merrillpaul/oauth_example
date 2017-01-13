@@ -26,7 +26,6 @@ class OAuth2Config extends AuthorizationServerConfigurerAdapter {
     private AuthenticationManager authenticationManager
 
     @Autowired
-    @Qualifier("appTokenStore")
     private TokenStore tokenStore
 
     @Override

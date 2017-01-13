@@ -2,6 +2,7 @@ package com.merrill.examples.oauth2.commons.service
 
 import com.merrill.examples.oauth2.commons.domain.tokenstore.AccessToken
 import com.merrill.examples.oauth2.commons.domain.tokenstore.RefreshToken
+import org.springframework.security.oauth2.provider.OAuth2Authentication
 
 /**
  * Created by upaulm2 on 1/13/17.
@@ -9,11 +10,11 @@ import com.merrill.examples.oauth2.commons.domain.tokenstore.RefreshToken
 interface OauthTokenStoreService {
     AccessToken getAccessToken(String tokenKey)
 
-    AccessToken saveToken(AccessToken accessToken)
+    AccessToken saveToken(AccessToken accessToken, OAuth2Authentication authentication)
 
     void deleteAccessToken(String tokenKey)
 
-    RefreshToken saveToken(RefreshToken refreshToken)
+    RefreshToken saveToken(RefreshToken refreshToken, OAuth2Authentication authentication)
 
     RefreshToken getRefreshToken(String tokenKey)
 

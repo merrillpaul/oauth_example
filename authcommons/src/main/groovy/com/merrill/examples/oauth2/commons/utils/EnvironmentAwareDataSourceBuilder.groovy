@@ -31,7 +31,7 @@ class EnvironmentAwareDataSourceBuilder {
             dataSource = new JndiDataSourceLookup().getDataSource(properties['jndiName'])
         } else {
             dataSource = DataSourceBuilder.create().build()
-            populateObjectFromProperties(dataSource, properties)
+            DataBinder.populateObjectFromProperties(dataSource, properties)
         }
 
         if (environment.activeProfiles.contains('dev')) {
@@ -56,7 +56,5 @@ class EnvironmentAwareDataSourceBuilder {
         dataSource
     }
 
-    static void populateObjectFromProperties(def target, def properties) {
-        new RelaxedDataBinder(target).bind(new MutablePropertyValues(properties))
-    }
+
 }

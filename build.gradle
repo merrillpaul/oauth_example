@@ -114,7 +114,7 @@ subprojects {
 	}
 	
 	tasks.withType(JavaCompile) {
-    	options.incremental = true
+    	//options.incremental = true
 	}
 
 	sourceSets {
