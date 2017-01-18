@@ -1,6 +1,7 @@
 package com.merrill.examples.oauth2.config
 
 import com.merrill.examples.oauth2.commons.service.impl.LocalAwareRemoteTokenServices
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer
 import org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler
+import org.springframework.security.oauth2.provider.token.AccessTokenConverter
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices
 
 /**
@@ -29,6 +31,9 @@ class OAuth2ResourceServerConfig extends GlobalMethodSecurityConfiguration {
     @Value('${config.oauth2.client_secret}')
     String checkTokenClientSecret
 
+    @Autowired
+    AccessTokenConverter accessTokenConverter
+
     @Override
     protected MethodSecurityExpressionHandler createExpressionHandler() {
         new OAuth2MethodSecurityExpressionHandler()
@@ -41,6 +46,7 @@ class OAuth2ResourceServerConfig extends GlobalMethodSecurityConfiguration {
         tokenServices.checkTokenEndpointUrl = checkTokenUrl
         tokenServices.clientId = checkTokenClient
         tokenServices.clientSecret = checkTokenClientSecret
+        tokenServices.accessTokenConverter = accessTokenConverter
         tokenServices
     }
 }

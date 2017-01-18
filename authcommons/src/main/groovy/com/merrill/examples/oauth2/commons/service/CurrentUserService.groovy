@@ -23,9 +23,6 @@ class CurrentUserService {
 	@Autowired
 	PasswordEncoder passwordEncoder
 
-	@Autowired
-	UserService userService
-
 	/**
 	 * Get the domain class instance associated with the current authentication.
 	 * @return the user

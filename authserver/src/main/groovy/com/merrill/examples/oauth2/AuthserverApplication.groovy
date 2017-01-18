@@ -1,7 +1,7 @@
 package com.merrill.examples.oauth2
 
-import com.merrill.examples.oauth2.commons.domain.tokenstore.AccessToken
 import com.merrill.examples.oauth2.commons.jms.CustomerLocationTokenStorePublisher
+import com.merrill.examples.oauth2.commons.provider.token.converter.AuthServerAccessTokenConverter
 import com.merrill.examples.oauth2.commons.provider.token.store.DefaultTokenStore
 import com.merrill.examples.oauth2.commons.service.OauthTokenStoreService
 import com.merrill.examples.oauth2.commons.service.impl.MongoOauthTokenStoreService
@@ -13,12 +13,12 @@ import org.springframework.context.annotation.Primary
 import org.springframework.jms.annotation.EnableJms
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory
 import org.springframework.jms.config.JmsListenerContainerFactory
-import org.springframework.jms.core.JmsTemplate
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter
 import org.springframework.jms.support.converter.MessageConverter
 import org.springframework.jms.support.converter.MessageType
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.oauth2.provider.token.AccessTokenConverter
 import org.springframework.security.oauth2.provider.token.TokenStore
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
@@ -77,8 +77,14 @@ public class AuthserverApplication extends WebMvcConfigurerAdapter {
 		new DefaultTokenStore()
 	}
 
-
 	@Bean
+	public AccessTokenConverter accessTokenConverter() {
+		new AuthServerAccessTokenConverter()
+	}
+
+
+
+		@Bean
 	public WebMvcConfigurer corsConfigurer() {
 		return new WebMvcConfigurerAdapter()  {
 			@Override

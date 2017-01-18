@@ -1,14 +1,14 @@
 package com.merrill.examples.oauth2.controller
 
+import com.merrill.examples.oauth2.commons.service.ResourceCurrentUserService
 import groovy.json.JsonOutput
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
-
 
 /**
  * Created by upaulm2 on 1/10/17.
@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/foo")
 class FooController {
+
+    @Autowired
+    ResourceCurrentUserService resourceCurrentUserService
 
     @PreAuthorize("#oauth2.hasScope('read')")
     @RequestMapping(value = "/foos", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
@@ -34,7 +37,8 @@ class FooController {
         JsonOutput.toJson(
                 [
                         fooName: "Foo ${id} Name",
-                        fooId: "FID ${id}"
+                        fooId  : "FID ${id}",
+                        user   : resourceCurrentUserService.currentUser
                 ]
         )
     }

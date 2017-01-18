@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.client.ClientCredentialsTokenEndpointFilter
 import org.springframework.security.oauth2.provider.endpoint.FrameworkEndpointHandlerMapping
 import org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint
+import org.springframework.security.oauth2.provider.token.AccessTokenConverter
 import org.springframework.security.oauth2.provider.token.TokenStore
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 
@@ -27,6 +28,9 @@ class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
     private TokenStore tokenStore
+
+    @Autowired
+    private AccessTokenConverter accessTokenConverter
 
     @Override
     public void configure(
@@ -62,7 +66,7 @@ class OAuth2Config extends AuthorizationServerConfigurerAdapter {
         endpoints
                 .tokenStore(tokenStore)
                 .authenticationManager(authenticationManager)
-       // .accessTokenConverter(null)
+                .accessTokenConverter(accessTokenConverter)
     }
 
 

@@ -48,7 +48,8 @@ class LocalAwareRemoteTokenServices extends RemoteTokenServices {
                 throw new InvalidTokenException("Invalid access token: " + accessTokenValue)
             }
         } catch (InvalidTokenException te) {
-            LOGGER.warn("invalid token in local token store", te)
+            LOGGER.warn("invalid token in local token store") // not to worry and log exception and scare everybody
+            // just to handle the error and then let the remote check_token to be fired as a fallback
 
         }
 

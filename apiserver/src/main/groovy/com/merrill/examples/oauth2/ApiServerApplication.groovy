@@ -1,6 +1,7 @@
 package com.merrill.examples.oauth2
 
 import com.merrill.examples.oauth2.commons.jms.CustomerLocationTokenStorePublisher
+import com.merrill.examples.oauth2.commons.provider.token.converter.ResourceServerAccessTokenConverter
 import com.merrill.examples.oauth2.commons.provider.token.store.DefaultTokenStore
 import com.merrill.examples.oauth2.commons.service.OauthTokenStoreService
 import com.merrill.examples.oauth2.commons.service.impl.MongoOauthTokenStoreService
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Primary
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.oauth2.provider.token.AccessTokenConverter
 import org.springframework.security.oauth2.provider.token.TokenStore
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
@@ -29,9 +31,6 @@ public class ApiServerApplication extends WebMvcConfigurerAdapter {
 		new BCryptPasswordEncoder()
 	}
 
-
-	/// all this to be removed when remoteTokenSrevice is added
-
 	@Bean
 	public TokenStore tokenStore() {
 		new DefaultTokenStore()
@@ -45,5 +44,10 @@ public class ApiServerApplication extends WebMvcConfigurerAdapter {
 	@Bean
 	public CustomerLocationTokenStorePublisher customerLocationTokenStorePublisher() {
 		new CustomerLocationTokenStorePublisher()
+	}
+
+	@Bean
+	public AccessTokenConverter accessTokenConverter() {
+		new ResourceServerAccessTokenConverter()
 	}
 }
