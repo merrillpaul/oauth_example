@@ -52,7 +52,9 @@ class OAuth2Config extends AuthorizationServerConfigurerAdapter {
                 .authorizedGrantTypes("implicit")
                 .scopes("read")
                 .autoApprove(true)
-
+                .and()
+                .withClient("checkTokenClient")
+                .secret("password1")
     }
 
     @Override
@@ -60,6 +62,7 @@ class OAuth2Config extends AuthorizationServerConfigurerAdapter {
         endpoints
                 .tokenStore(tokenStore)
                 .authenticationManager(authenticationManager)
+       // .accessTokenConverter(null)
     }
 
 

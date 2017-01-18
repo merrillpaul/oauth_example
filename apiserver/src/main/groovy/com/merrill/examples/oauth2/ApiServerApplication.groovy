@@ -4,6 +4,7 @@ import com.merrill.examples.oauth2.commons.jms.CustomerLocationTokenStorePublish
 import com.merrill.examples.oauth2.commons.provider.token.store.DefaultTokenStore
 import com.merrill.examples.oauth2.commons.service.OauthTokenStoreService
 import com.merrill.examples.oauth2.commons.service.impl.MongoOauthTokenStoreService
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean

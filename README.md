@@ -161,6 +161,10 @@ TOKEN=93810147-ec08-4da8-818f-f62c9718fb6f; curl -H "Authorization: Bearer $TOKE
 {"fooName":"Foo 443434500 Name","fooId":"FID 443434500"}
 ```
 
+# Checktoken
+curl -u acme:acmesecret http://localhost:9999/uaa/oauth/check_token -H "Accept: application/json" -d token=$TOKEN
+
+
 # Logout
 * From Browser or Ajax call http://localhost:9999/uaa/oauth/logout_token?token=ca7dc0a3-2e46-4798-8218-072d7a25743c or
 * TOKEN=sometoken; curl http://localhost:9999/uaa/oauth/logout_token -d token=$TOKEN

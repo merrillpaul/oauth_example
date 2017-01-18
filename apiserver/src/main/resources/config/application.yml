@@ -1,5 +1,9 @@
 config:
   auth_server: false
+  oauth2:
+    check_token_url: http://localhost:9999/uaa/oauth/check_token
+    client_id: checkTokenClient
+    client_secret: password1
 
 server:
   port: 9998
