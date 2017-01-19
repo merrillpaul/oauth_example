@@ -23,3 +23,15 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+
+### UI JS
+# Front End Dependency Generated
+ui-react/.sass-cache/
+ui-react/bower_components/
+ui-react/dist/
+ui-react/node/
+ui-react/node_modules/
+ui-react/npm-debug.log
+ui-react/.tscache/
+ui-react/scss/.tmp/
+dist/
