@@ -1,1 +1,1 @@
-include 'authcommons','authserver', 'apiserver'
+include 'authcommons','authserver', 'apiserver', 'ui-react'
