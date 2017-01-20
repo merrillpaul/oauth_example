@@ -16,7 +16,7 @@ export default class App extends Component {
                             <Col lg={12} xs={12} md={3}>
                                 <div className="App-header">
                                     <img src={logo} className="App-logo" alt="logo"/>
-                                    <h2>Welcome to React</h2>
+                                    <h2>{process.env.REACT_APP_NAME} - Welcome to React</h2>
                                 </div>
                             </Col>
                         </Row>
@@ -26,7 +26,7 @@ export default class App extends Component {
                             </Col>
                         </Row>
                         <Row>
-                            <Col lg={12} xs={12} md={3}>
+                            <Col sm={12} lg={12} xs={12} md={3}>
                                 <div className="App-Content">
                                     {this.props.children}
                                 </div>
@@ -43,4 +43,3 @@ export default class App extends Component {
         );
     }
 }
-

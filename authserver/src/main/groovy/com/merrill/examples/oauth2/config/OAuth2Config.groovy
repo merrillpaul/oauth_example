@@ -52,6 +52,11 @@ class OAuth2Config extends AuthorizationServerConfigurerAdapter {
                 .authorizedGrantTypes("authorization_code", "refresh_token",
                 "password", "implicit").scopes("read")
                 .and()
+                .withClient("poneclient")
+                .secret("password1")
+                .authorizedGrantTypes("authorization_code", "refresh_token",
+                "password", "implicit").scopes("read")
+                .and()
                 .withClient("sampleClientId")
                 .authorizedGrantTypes("implicit")
                 .scopes("read")
