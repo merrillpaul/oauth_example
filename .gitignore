@@ -35,3 +35,17 @@ ui-react/npm-debug.log
 ui-react/.tscache/
 ui-react/scss/.tmp/
 dist/
+# dependencies
+node_modules
+
+# testing
+coverage
+
+# production
+build
+dist
+
+# misc
+.DS_Store
+.env
+npm-debug.log
