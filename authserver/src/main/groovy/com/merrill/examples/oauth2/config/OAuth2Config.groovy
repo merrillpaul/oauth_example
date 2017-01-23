@@ -72,6 +72,7 @@ class OAuth2Config extends AuthorizationServerConfigurerAdapter {
                 .tokenStore(tokenStore)
                 .authenticationManager(authenticationManager)
                 .accessTokenConverter(accessTokenConverter)
+        .reuseRefreshTokens()
     }
 
 

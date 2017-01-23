@@ -4,5 +4,5 @@ import LoginPage from './pages/LoginPage';
 
 
 export default (
-    <Route path="/login" component={LoginPage} />
+    <Route path="/login" component={LoginPage} />    
 );
