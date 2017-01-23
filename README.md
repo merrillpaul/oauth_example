@@ -8,6 +8,7 @@ By default the api server will have a well known url to the mongo db token store
 For eg an API server in San Antonio , TX will have a route to the mongodb as 
 mongodb://tokenstore_user:Password1!@local_mongo_store:27017/tokenstoredb
 where local_mongo_store might be a localhost or a host name routed to a local IP
+## Uses React, Redux and Axios
 
 ## AuthServer
 * UserDetails in mysql
