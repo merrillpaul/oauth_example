@@ -19,7 +19,7 @@ import java.security.Principal
 /**
  * Created by upaulm2 on 1/11/17.
  */
-@FrameworkEndpoint
+//@FrameworkEndpoint
 class LogoutEndpoint {
 
     @Autowired

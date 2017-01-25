@@ -2,6 +2,7 @@ package com.merrill.examples.oauth2.config
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer
@@ -25,6 +26,9 @@ class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
     private AuthenticationManager authenticationManager
+
+    @Value('${config.refreshTokens}')
+    boolean refreshTokens
 
     @Autowired
     private TokenStore tokenStore
@@ -72,7 +76,7 @@ class OAuth2Config extends AuthorizationServerConfigurerAdapter {
                 .tokenStore(tokenStore)
                 .authenticationManager(authenticationManager)
                 .accessTokenConverter(accessTokenConverter)
-        .reuseRefreshTokens()
+                .reuseRefreshTokens(refreshTokens)
     }
 
 

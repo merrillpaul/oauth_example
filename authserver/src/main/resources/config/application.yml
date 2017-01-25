@@ -1,5 +1,6 @@
 config:
   auth_server: true
+  refreshTokens: true
 
 server:
   port: 9999

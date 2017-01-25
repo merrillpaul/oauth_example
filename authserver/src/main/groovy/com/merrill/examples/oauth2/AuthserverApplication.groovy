@@ -20,9 +20,12 @@ import org.springframework.jms.support.converter.MessageConverter
 import org.springframework.jms.support.converter.MessageType
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer
 import org.springframework.security.oauth2.provider.token.AccessTokenConverter
 import org.springframework.security.oauth2.provider.token.TokenStore
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import org.springframework.web.filter.CorsFilter
@@ -31,15 +34,23 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import javax.jms.ConnectionFactory
+import java.security.Principal
 
 @SpringBootApplication
 @EnableJms
+@EnableResourceServer
+@RestController
 public class AuthserverApplication extends WebMvcConfigurerAdapter {
 
 
     public static void main(String[] args) {
         def ctx = SpringApplication.run(AuthserverApplication.class, args)
         ctx.start()
+    }
+
+    @RequestMapping("/user")
+    def user(Principal user) {
+        user.principal.toJson()
     }
 
     @Bean

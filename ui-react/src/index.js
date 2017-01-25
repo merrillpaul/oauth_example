@@ -3,19 +3,18 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import {Router, browserHistory} from 'react-router';
 import routes from './routes';
+import {createStore, combineReducers, applyMiddleware} from 'redux';
+import logger from 'redux-logger';
+import thunk from 'redux-thunk';
+import promise from 'redux-promise-middleware';
+import reducers from './modules/reducers';
 import {initAuth} from './modules/auth';
-import {redux as reduxSamples} from './scratch/redux_samples';
 
+const _reducers = combineReducers(reducers);
+const middleWare = applyMiddleware(promise(), thunk, logger());
+const store = createStore(_reducers, middleWare);
 
-reduxSamples();
-
-initAuth({
-    baseURL: process.env.REACT_APP_AUTH_END_POINT,
-    auth: {
-        username: process.env.REACT_APP_AUTH_CLIENT_ID,
-        password: process.env.REACT_APP_AUTH_CLIENT_SECRET
-    }
-});
+initAuth(store);
 ReactDOM.render(
     <Router history={browserHistory} routes={routes}/>,
     document.getElementById('root'));

@@ -75,4 +75,17 @@ class AppUserDetails extends User {
     def getExtraData(String key) {
         this.extraData[key]
     }
+
+    def toJson() {
+        [
+                firstName: this.firstName,
+                lastName: this.lastName,
+                honorific: this.honorific,
+                timezoneId: this.timezoneId,
+                id: this.id,
+                username: this.username,
+                roles: this.authorities.collect { it.role },
+                metadata: this.extraData
+        ]
+    }
 }
