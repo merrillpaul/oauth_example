@@ -1,5 +1,6 @@
 import { TokenConstants, UserConstants } from './../constants';
-import context from './../AuthContext';
+import context from './../../shared/AppContext';
+import userService from './../shared/services/UserService';
 const initialState = {
     accessToken: '',
     fetching: false,
@@ -50,7 +51,7 @@ const tokenReducer = (state = initialState, action) => {
           });
           dispatch({
             type: UserConstants.GET_USER_INFO,
-            payload: context.userService.getUserInfo()
+            payload: userService.getUserInfo()
           });
           break;
         }

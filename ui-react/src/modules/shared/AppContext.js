@@ -1,10 +1,7 @@
-import UserService from './shared/services/UserService';
-
-class AuthContext {
+class AppContext {
   constructor() {
     this.router = null;
-    this.storage = null;
-    this.userService = new UserService();
+    this.storage = null;  
   }
 
   setRouter(router) {
@@ -36,13 +33,6 @@ class AuthContext {
     this.store.dispatch(objOrDispatcherFunc);
   }
 
-  getUserService() {
-    return this.userService;
-  }
-
-  me() {
-    return this.userService.getUserInfo();
-  }
 }
 
-export default new AuthContext();
+export default new AppContext();

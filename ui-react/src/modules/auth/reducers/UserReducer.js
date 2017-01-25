@@ -1,5 +1,5 @@
 import { UserConstants, TokenConstants } from './../constants';
-import context from './../AuthContext';
+import context from './../../shared/AppContext';
 
 const initialState = {
   username: '',

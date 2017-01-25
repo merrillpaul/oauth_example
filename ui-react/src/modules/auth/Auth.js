@@ -1,5 +1,3 @@
-import context from './AuthContext';
-import {LocalStorage} from './../shared/storage';
 import TokenStore from './shared/stores/TokenStore';
 import UserStore from './shared/stores/UserStore';
 
@@ -13,16 +11,15 @@ class Auth {
         return this.initialized;
     }
 
-    init(store) {
-        let storage = new LocalStorage();
-        context.setStorage(storage)
-        .setStore(store)
-        .setTokenStore(new TokenStore(storage))
-        .setUserStore(new UserStore(storage));
+    init(context) {
+        context.setTokenStore(new TokenStore(context.storage))
+        .setUserStore(new UserStore(context.storage));
         if (this.isInitialized()) {
             throw new Error('Auth should be initialized only once.');
         }
         this.initialized = true;
+
+        // Check whether we have some creds in the storage
 
     }
 }

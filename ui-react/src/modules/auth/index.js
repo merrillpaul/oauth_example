@@ -1,5 +1,5 @@
 import auth from './Auth';
 export {default as authRoutes} from './routes';
-export function initAuth(store) {
-  auth.init(store);
+export function initAuth(context) {
+  auth.init(context);
 };

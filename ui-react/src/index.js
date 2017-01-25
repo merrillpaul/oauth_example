@@ -7,14 +7,19 @@ import {createStore, combineReducers, applyMiddleware} from 'redux';
 import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise-middleware';
+
 import reducers from './modules/reducers';
 import {initAuth} from './modules/auth';
+import context from './modules/shared/AppContext';
+import {LocalStorage} from './modules/shared/storage';
+
 
 const _reducers = combineReducers(reducers);
 const middleWare = applyMiddleware(promise(), thunk, logger());
 const store = createStore(_reducers, middleWare);
+context.setStorage(new LocalStorage()).setStore(store);
+initAuth(context);
 
-initAuth(store);
 ReactDOM.render(
     <Router history={browserHistory} routes={routes}/>,
     document.getElementById('root'));

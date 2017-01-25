@@ -1,9 +1,9 @@
 import axios from 'axios';
 import {urlstringify} from './../../../utils/UtilFunx';
-import context from './../../AuthContext';
+import context from './../../../shared/AppContext';
 
 
-export default class UserService {
+class UserService {
     constructor() {
         this.request = axios.create({
             baseURL: process.env.REACT_APP_AUTH_END_POINT,
@@ -42,6 +42,20 @@ export default class UserService {
           "Authorization": `Bearer ${token.accessToken}`
         }
       });
-      
     }
+
+    getCurrentToken() {
+      return context.store.getState().token;
+    }
+
+    getCurrentUser() {
+      return context.store.getState().user;
+    }
+
+    isAuthenticated() {
+      return context.store.getState().user.isAuthenticated;
+    }
+
 }
+
+export default new UserService();
