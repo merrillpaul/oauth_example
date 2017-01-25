@@ -7,11 +7,6 @@ const initialState = {
     refreshToken: '',
     expiresIn: -1
 };
-const dispatch = (dispatcher) => {
-    setTimeout(()=> {
-      context.dispatch(dispatcher)
-  }, 0);
-};
 
 const tokenReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -49,7 +44,7 @@ const tokenReducer = (state = initialState, action) => {
             refreshToken: tokenPayload.refresh_token,
             expiresIn: tokenPayload.expires_in
           });
-          dispatch({
+          context.dispatch({
             type: UserConstants.GET_USER_INFO,
             payload: userService.getUserInfo()
           });
@@ -61,6 +56,25 @@ const tokenReducer = (state = initialState, action) => {
           context.tokenStore.clear();
           break;
         }
+        case `${TokenConstants.AUTHENTICATE_TOKEN}_FULFILLED`:
+        {
+          let token = context.tokenStore.get();
+          state = {...state,
+            fetching: false,
+            accessToken: token.accessToken,
+            refreshToken: token.refreshToken,
+            expiresIn: token.expiresIn
+          };
+          break;
+        }
+        case `${TokenConstants.AUTHENTICATE_TOKEN}_REJECTED`:
+        {
+          // TODO when an auto authenticate failed due to invalid accessToken
+          // which might be expired or what not, then we actually need
+          // to try with refreshToken
+          break;
+        }
+
         default:
           break;
     }

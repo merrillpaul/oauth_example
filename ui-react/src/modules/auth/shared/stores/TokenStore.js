@@ -11,10 +11,10 @@ export default class TokenStore {
   }
 
   set(token) {
-    return this.storage.set(TOKEN_KEY, JSON.stringify(token));
+    this.storage.set(TOKEN_KEY, JSON.stringify(token));
   }
 
   clear() {
-    return this.storage.remove(TOKEN_KEY);
+    this.storage.remove(TOKEN_KEY);
   }
 }

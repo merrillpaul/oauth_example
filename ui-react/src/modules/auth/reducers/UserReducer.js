@@ -49,11 +49,18 @@ const userReducer = (state = initialState, action) => {
     }
 
     case `${UserConstants.GET_USER_INFO}_FULFILLED`:
+    case `${TokenConstants.AUTHENTICATE_TOKEN}_FULFILLED`: // when already a token is saved and app is refreshed
     {
       state = {...state, isAuthenticated: true, isLoading: false,
         error: []
       };
       state = Object.assign(state, action.payload.data);
+      break;
+    }
+    case `${TokenConstants.AUTHENTICATE_TOKEN}_REJECTED`:
+    {
+      // TODO ?? do we need to clean up the user info if we are now in
+      // refreshToken request phase
       break;
     }
     default:

@@ -1,5 +1,6 @@
 import TokenStore from './shared/stores/TokenStore';
 import UserStore from './shared/stores/UserStore';
+import TokenActions from './actions/TokenActions';
 
 
 class Auth {
@@ -19,7 +20,11 @@ class Auth {
         }
         this.initialized = true;
 
-        // Check whether we have some creds in the storage
+        // if token already persisted
+        let token = context.tokenStore.get();
+        if (token) {
+          TokenActions.authenticate(token.accessToken);
+        }
 
     }
 }

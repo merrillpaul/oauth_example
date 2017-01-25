@@ -1,7 +1,7 @@
 class AppContext {
   constructor() {
     this.router = null;
-    this.storage = null;  
+    this.storage = null;
   }
 
   setRouter(router) {
@@ -30,7 +30,9 @@ class AppContext {
   }
 
   dispatch(objOrDispatcherFunc) {
-    this.store.dispatch(objOrDispatcherFunc);
+    setTimeout(()=> {
+          this.store.dispatch(objOrDispatcherFunc)
+      }, 0);    
   }
 
 }
