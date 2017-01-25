@@ -1,6 +1,6 @@
-import context from './../../shared/AppContext';
-import { TokenConstants } from './../constants';
-import userService from './../shared/services/UserService';
+import context from 'modules/shared/AppContext';
+import { TokenConstants } from 'modules/auth/constants';
+import userService from 'modules/auth/shared/services/UserService';
 
 class TokenActions {
 
@@ -11,10 +11,10 @@ class TokenActions {
     });
   }
 
-  refreshToken(refreshToken) {
+  refreshToken() {
     context.dispatch({
       type: TokenConstants.REFRESH_TOKEN,
-      payload: userService.refreshToken(refreshToken)
+      payload: userService.refreshToken()
     });
   }
 

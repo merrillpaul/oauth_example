@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
-import logo from './logo.svg';
-import './App.css';
-import {Grid, Row, Col} from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import {Header, Footer} from './layout';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
+import {Grid, Row, Col} from 'react-bootstrap';
+
+import logo from 'logo.svg';
+import 'App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import {Header, Footer} from 'layout';
+
 
 class App extends Component {
     render() {

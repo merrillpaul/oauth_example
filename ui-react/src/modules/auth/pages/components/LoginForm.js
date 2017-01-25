@@ -1,6 +1,6 @@
 import React from 'react';
-import {textFieldChange} from './../../../utils/CommonEventHandler';
-import TokenActions from './../../actions/TokenActions';
+import {textFieldChange} from 'modules/utils/CommonEventHandler';
+import TokenActions from 'modules/auth/actions/TokenActions';
 
 export default class LoginForm extends React.Component {
 

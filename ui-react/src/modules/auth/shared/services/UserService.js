@@ -1,6 +1,6 @@
 import axios from 'axios';
-import {urlstringify} from './../../../utils/UtilFunx';
-import context from './../../../shared/AppContext';
+import {urlstringify} from 'modules/utils/UtilFunx';
+import context from 'modules/shared/AppContext';
 
 
 class UserService {

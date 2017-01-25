@@ -32,7 +32,11 @@ class AppContext {
   dispatch(objOrDispatcherFunc) {
     setTimeout(()=> {
           this.store.dispatch(objOrDispatcherFunc)
-      }, 0);    
+      }, 0);
+  }
+
+  getState() {
+    return this.store.getState();
   }
 
 }

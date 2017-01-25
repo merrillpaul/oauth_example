@@ -1,5 +1,6 @@
-import { UserConstants, TokenConstants } from './../constants';
-import context from './../../shared/AppContext';
+import { UserConstants, TokenConstants } from 'modules/auth/constants';
+import context from 'modules/shared/AppContext';
+import TokenActions from 'modules/auth/actions/TokenActions';
 
 const initialState = {
   username: '',
@@ -61,6 +62,8 @@ const userReducer = (state = initialState, action) => {
     {
       // TODO ?? do we need to clean up the user info if we are now in
       // refreshToken request phase
+      state = {...state, isAuthenticated: false, error: [action.payload.response.data]};
+      TokenActions.refreshToken();
       break;
     }
     default:
