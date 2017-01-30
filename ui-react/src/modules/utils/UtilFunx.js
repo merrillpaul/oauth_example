@@ -1,6 +1,7 @@
 import qs from 'qs';
 import React from 'react';
 import { keys } from 'lodash';
+import {isArray} from 'lodash';
 
 let forEachChild;
 function urlstringify(json) {
@@ -35,10 +36,50 @@ function excludeProps(exclude, source) {
         if (exclude.indexOf(key) === -1) {
           result[key] = source[key];
         }
-      }    
+      }
     }
 
     return result;
 };
 
-export {urlstringify, deepForEach, excludeProps};
+function enforceRootElement(object, props) {
+    let newObject = undefined;
+
+    if (typeof object === 'string' || isArray(object)) {
+      if (!props) {
+        props = {};
+      }
+
+      if (!props.style) {
+        props.style = {};
+      }
+
+      props.style.display = 'inline-block';
+
+      newObject = <div {...props}>{ object }</div>;
+    } else {
+      let newProps = props;
+      let newChildren = [];
+
+      if (object.props) {
+        let propKeys = keys(object.props);
+        let len = propKeys.length
+        let i = 0;
+        for (; i< len; i++) {
+          let key = propKeys[i];
+          let value = object.props[key];
+          if (key === 'children') {
+            newChildren = value;
+          } else {
+            newProps[key] = value;
+          }
+        }
+      }
+
+      newObject = React.cloneElement(object, newProps, newChildren);
+    }
+
+    return newObject;
+  };
+
+export {urlstringify, deepForEach, excludeProps, enforceRootElement};
