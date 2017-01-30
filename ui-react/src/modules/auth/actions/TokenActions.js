@@ -45,9 +45,14 @@ class TokenActions {
 
 
   logout(cb) {
-    // TODO call the actual logout and then the cb
-    context.tokenStore.clear();
-    cb();
+    context.dispatch({
+      type: `${TokenConstants.LOGOUT}_PENDING`
+    });
+
+    context.dispatch({
+      type: `${TokenConstants.LOGOUT}_FULFILLED`,
+      callback: cb
+    });
   }
 
 

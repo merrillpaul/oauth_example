@@ -54,6 +54,7 @@ class UserService {
     }
 
     isAuthenticated() {
+      debugger;
       return context.store.getState().user.isAuthenticated;
     }
 
@@ -64,7 +65,7 @@ class UserService {
       }
       let userRoles = user.roles;
       let b = intersection(userRoles, roles);
-      return false;
+      return true;
     }
 
 }

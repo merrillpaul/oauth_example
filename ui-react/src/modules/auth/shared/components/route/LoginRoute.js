@@ -11,6 +11,7 @@ export default class LoginRoute extends Route {
                 var homeRoute = router.getHomeRoute();
                 var authenticatedHomeRoute = router.getAuthenticatedHomeRoute();
                 var redirectTo = (authenticatedHomeRoute || {}).path || (homeRoute || {}).path || '/';
+                debugger;
                 replace(redirectTo);
             }
             callback();

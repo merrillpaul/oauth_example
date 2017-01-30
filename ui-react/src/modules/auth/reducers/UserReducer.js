@@ -76,10 +76,30 @@ const userReducer = (state = initialState, action) => {
       break;
     }
     case TokenConstants.START_UP_WITH_TOKEN:
+    case TokenConstants.POST_LOGOUT:
     {
       action.callback();
       break;
     }
+
+    case `${TokenConstants.LOGOUT}_PENDING`:
+    {
+      break;
+    }
+    case `${TokenConstants.LOGOUT}_FULFILLED`:
+    {
+      state = Object.assign({}, initialState);
+      state = {...state, loggedOut: true};
+      context.userStore.clearCurrentUser();
+      context.dispatch(
+        {
+          type: TokenConstants.POST_LOGOUT,
+          callback: action.callback
+        }
+      );
+      break;
+    }
+
     default:
       break;
   }

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router';
-import {LogoutLink, NotAuthenticated} from 'RouteCommons';
+import {LogoutLink, NotAuthenticated, Authenticated} from 'RouteCommons';
 
 export default class IndexPage extends React.Component {
     render() {
@@ -17,8 +17,13 @@ export default class IndexPage extends React.Component {
                         <NotAuthenticated>
                           <li><Link to="/login">Login</Link></li>
                         </NotAuthenticated>
-                        <li><LogoutLink redirectTo="login"/></li>
+                        <Authenticated>
+                          <li><LogoutLink redirectTo="login"/></li>
+                        </Authenticated>
                         <li><Link to="/profile">Custom Profile Data</Link></li>
+                        <Authenticated roles="ROLE_ADMIN">
+                          <li><Link to="/admin">Admin</Link></li>
+                        </Authenticated>
                     </ol>
                 </div>
             </div>

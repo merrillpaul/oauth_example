@@ -75,6 +75,18 @@ const tokenReducer = (state = initialState, action) => {
           break;
         }
 
+        case `${TokenConstants.LOGOUT}_PENDING`:
+        {
+          break;
+        }
+        case `${TokenConstants.LOGOUT}_FULFILLED`:
+        {
+          state = Object.assign({}, initialState);
+          context.tokenStore.clear();
+          break;
+        }
+        
+
         default:
           break;
     }

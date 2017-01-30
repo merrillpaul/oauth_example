@@ -10,6 +10,7 @@ export default class LogoutRoute extends Route {
                 var homeRoute = router.getHomeRoute();
                 var loginRoute = router.getLoginRoute();
                 var redirectTo = this.redirectTo || (homeRoute || {}).path || (loginRoute || {}).path || '/';
+                debugger;
                 replace(redirectTo);
                 callback();
             });

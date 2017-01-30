@@ -15,5 +15,8 @@ export default (
         <AuthenticatedRoute roles="ROLE_ADMIN,ROLE_PRACTITIONER" path="/hello" component={HelloPage}/>
         {authRoutes}
         {module1Routes}
+        <AuthenticatedRoute>
+          <HomeRoute path='/home' component={IndexPage} />
+        </AuthenticatedRoute>
     </HomeRoute>
 );

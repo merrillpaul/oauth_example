@@ -7,3 +7,4 @@ export {default as UnauthorizedRoute} from 'modules/auth/shared/components/route
 export {default as LogoutLink} from 'modules/auth/shared/components/link/LogoutLink';
 
 export {default as NotAuthenticated} from 'modules/auth/shared/components/checks/NotAuthenticated';
+export {default as Authenticated} from 'modules/auth/shared/components/checks/Authenticated';

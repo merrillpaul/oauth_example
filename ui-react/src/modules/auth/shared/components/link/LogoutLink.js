@@ -31,7 +31,6 @@ export default class LogoutLink extends React.Component {
       this.setState({ disabled: true });
 
       TokenActions.logout(() => {
-        debugger;
         this._performRedirect(primaryRedirectTo);
       });
     }
