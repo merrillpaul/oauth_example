@@ -15,7 +15,7 @@ export default class IndexPage extends React.Component {
                     <p>Ready to begin? </p>
                     <ol className="lead">
                         <li><Link to="/login">Login</Link></li>
-                          <li><LogoutLink redirectTo="login">Logout</LogoutLink></li>
+                          <li><LogoutLink redirectTo="login"/></li>
                         <li><Link to="/profile">Custom Profile Data</Link></li>
                     </ol>
                 </div>
