@@ -1,14 +1,19 @@
 import React from 'react';
-import {IndexRoute, Route} from 'react-router';
+import {IndexRoute} from 'react-router';
 import App from 'App';
 import {HelloPage} from 'modules/dashboard';
 import IndexPage from 'pages/IndexPage';
+import {AuthenticatedRoute, HomeRoute} from 'RouteCommons';
+
+// routes
 import {authRoutes} from 'modules/auth';
+import {module1Routes} from 'modules/module1';
 
 export default (
-    <Route path="/" component={App}>
+    <HomeRoute path="/" component={App}>
         <IndexRoute component={IndexPage}/>
-        <Route path="/hello" component={HelloPage}/>
+        <AuthenticatedRoute roles="ROLE_ADMIN,ROLE_PRACTITIONER" path="/hello" component={HelloPage}/>
         {authRoutes}
-    </Route>
+        {module1Routes}
+    </HomeRoute>
 );

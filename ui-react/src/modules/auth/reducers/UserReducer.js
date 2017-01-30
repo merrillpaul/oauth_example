@@ -56,6 +56,14 @@ const userReducer = (state = initialState, action) => {
         error: []
       };
       state = Object.assign(state, action.payload.data);
+      if (action.callback) {
+        context.dispatch(
+          {
+            type: TokenConstants.START_UP_WITH_TOKEN,
+            callback: action.callback
+          }
+        );
+      }
       break;
     }
     case `${TokenConstants.AUTHENTICATE_TOKEN}_REJECTED`:
@@ -63,7 +71,13 @@ const userReducer = (state = initialState, action) => {
       // TODO ?? do we need to clean up the user info if we are now in
       // refreshToken request phase
       state = {...state, isAuthenticated: false, error: [action.payload.response.data]};
+      action.callback();
       TokenActions.refreshToken();
+      break;
+    }
+    case TokenConstants.START_UP_WITH_TOKEN:
+    {
+      action.callback();
       break;
     }
     default:

@@ -19,12 +19,38 @@ class TokenActions {
   }
 
 
-  authenticate(token) {
+  authenticate(token, cb) {
+
     context.dispatch({
-      type: TokenConstants.AUTHENTICATE_TOKEN,
-      payload: userService.getUserInfo()
+      type: `${TokenConstants.AUTHENTICATE_TOKEN}_PENDING`
     });
+
+    userService.getUserInfo()
+    .then( (res) => {
+      context.dispatch({
+        type: `${TokenConstants.AUTHENTICATE_TOKEN}_FULFILLED`,
+        payload: res,
+        callback: cb
+      });
+    })
+    .catch( (err) => {
+      context.dispatch({
+        type: `${TokenConstants.AUTHENTICATE_TOKEN}_REJECTED`,
+        payload: err,
+        callback: cb
+      });
+    });
+
   }
+
+
+  logout(cb) {
+    // TODO call the actual logout and then the cb
+    context.tokenStore.clear();
+    cb();
+  }
+
+
 
 }
 

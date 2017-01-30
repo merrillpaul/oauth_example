@@ -12,7 +12,7 @@ class Auth {
         return this.initialized;
     }
 
-    init(context) {
+    init(context, cb) {
         context.setTokenStore(new TokenStore(context.storage))
         .setUserStore(new UserStore(context.storage));
         if (this.isInitialized()) {
@@ -23,7 +23,9 @@ class Auth {
         // if token already persisted
         let token = context.tokenStore.get();
         if (token) {
-          TokenActions.authenticate(token.accessToken);
+          TokenActions.authenticate(token.accessToken, cb);
+        } else {
+          cb();
         }
 
     }

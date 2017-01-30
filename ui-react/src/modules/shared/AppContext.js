@@ -39,6 +39,10 @@ class AppContext {
     return this.store.getState();
   }
 
+  getRouter() {
+    return this.router;
+  }
+
 }
 
 export default new AppContext();

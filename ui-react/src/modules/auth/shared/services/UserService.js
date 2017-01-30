@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {urlstringify} from 'modules/utils/UtilFunx';
 import context from 'modules/shared/AppContext';
+import {intersection} from 'lodash';
 
 
 class UserService {
@@ -49,11 +50,21 @@ class UserService {
     }
 
     getCurrentUser() {
-      return context.store.getState().user;
+      return this.isAuthenticated() ? context.store.getState().user: null;
     }
 
     isAuthenticated() {
       return context.store.getState().user.isAuthenticated;
+    }
+
+    hasRole(roles) {
+      let user = this.getCurrentUser();
+      if (!user) {
+        return false;
+      }
+      let userRoles = user.roles;
+      let b = intersection(userRoles, roles);
+      return false;
     }
 
 }

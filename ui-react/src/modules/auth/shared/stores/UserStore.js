@@ -24,7 +24,7 @@ export default class UserStore {
   }
 
   clearCurrentUser() {
-    this.storage.remove(`${USR_KEY}_name`)
-    .then(()=> this.storage.remove(USR_KEY));
+    this.storage.remove(`${USR_KEY}_name`);
+    this.storage.remove(USR_KEY);
   }
 }
