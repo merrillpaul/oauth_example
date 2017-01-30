@@ -19,7 +19,8 @@ const userReducer = (state = initialState, action) => {
     case `${TokenConstants.REQUEST_TOKEN}_PENDING`:
     {
       state = {...state,
-        isAuthenticated: false
+        isAuthenticated: false,
+        isLoading: true
       };
       break;
     }
